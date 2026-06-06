@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>RECAST Unity Responsive Demo - C8</title>
+  <style>
+    :root { color-scheme: light; --replay: #d95f02; --recast: #1b9e77; --ink: #1f2933; }
+    body { margin: 0; font-family: Arial, sans-serif; color: var(--ink); background: #f7f8fa; }
+    header { padding: 30px 38px 18px; background: white; border-bottom: 1px solid #dde2e8; }
+    h1 { margin: 0 0 8px; font-size: 30px; }
+    h2 { margin: 0 0 8px; font-size: 18px; }
+    p { line-height: 1.45; }
+    main { padding: 24px 38px 44px; }
+    .lede { max-width: 980px; margin: 0; color: #46515c; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .video-card, .card { background: white; border: 1px solid #dde2e8; border-radius: 8px; padding: 16px; }
+    video { width: 100%; aspect-ratio: 16 / 9; background: #101418; border-radius: 6px; display: block; }
+    video:not([src]), video[src=""] { display: none; }
+    .video-fallback { margin-top: 8px; color: #697681; font-size: 13px; }
+    .metrics { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin: 20px 0; }
+    .metric { background: white; border: 1px solid #dde2e8; border-radius: 8px; padding: 12px; }
+    .metric span { display: block; color: #697681; font-size: 12px; margin-bottom: 5px; }
+    .metric strong { font-size: 20px; }
+    .plot { margin-top: 18px; background: white; border: 1px solid #dde2e8; border-radius: 8px; padding: 12px; }
+    .plot img { max-width: 100%; display: block; }
+    .timeline { margin: 18px 0 0; padding: 0; list-style: none; }
+    .timeline li { background: white; border: 1px solid #dde2e8; border-radius: 8px; padding: 12px 14px; margin-bottom: 10px; }
+    .timeline p { margin: 4px 0 0; color: #4d5964; }
+    .time { display: inline-block; min-width: 72px; color: #697681; font-variant-numeric: tabular-nums; }
+    code { background: #eef1f4; padding: 1px 4px; border-radius: 4px; }
+    @media (max-width: 900px) { .grid, .metrics { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>RECAST Responsive Unity Demo: C8</h1>
+    <p class="lede">This page is a recording shell for the same mined conflict scenario in two modes: non-responsive replay and RECAST responsive. The Unity videos should be recorded from the same fixed camera so the behavioral contrast is visible without running a live demo.</p>
+  </header>
+  <main>
+    <section class="grid">
+      
+      <section class="video-card">
+        <h2>Non-responsive replay</h2>
+        <p>Vehicles follow the recorded/SUMO plan; safety signals are observed after the fact.</p>
+        <video controls muted preload="metadata" src="recordings/C8_replay.mp4"></video>
+        <div class="video-fallback">Place <code>C8_replay.mp4</code> in the <code>recordings/</code> folder.</div>
+      </section>
+    
+      
+      <section class="video-card">
+        <h2>RECAST responsive</h2>
+        <p>V2V reception updates awareness and changes vehicle behavior in the loop.</p>
+        <video controls muted preload="metadata" src="recordings/C8_recast.mp4"></video>
+        <div class="video-fallback">Place <code>C8_recast.mp4</code> in the <code>recordings/</code> folder.</div>
+      </section>
+    
+    </section>
+
+    <section class="metrics">
+      <div class="metric"><span>Scenario</span><strong>C8</strong></div>
+      <div class="metric"><span>Background vehicles</span><strong>20</strong></div>
+      <div class="metric"><span>Replay exposure</span><strong>3.70s</strong></div>
+      <div class="metric"><span>RECAST exposure</span><strong>1.00s</strong></div>
+      <div class="metric"><span>Exposure reduction</span><strong>2.70s</strong></div>
+      <div class="metric"><span>Min-DCA effect</span><strong>3.08m</strong></div>
+    </section>
+
+    <section class="plot">
+      <img src="dca_over_time.svg" alt="DCA over time">
+    </section>
+
+    <section>
+      <h2>Event Timeline</h2>
+      <ol class="timeline">
+        <li><span class="time">t=2.18s</span><strong>RECAST control event</strong><p>Vehicle 1 applies crossing slow down.</p></li>
+<li><span class="time">t=2.35s</span><strong>Replay enters safety violation</strong><p>Non-responsive replay enters TCA &lt;= 4s and DCA &lt;= 8m.</p></li>
+<li><span class="time">t=4.80s</span><strong>Replay closest approach</strong><p>Replay minimum DCA is 0.12 m.</p></li>
+<li><span class="time">t=5.17s</span><strong>RECAST control event</strong><p>Vehicle 18 applies crossing slow down.</p></li>
+<li><span class="time">t=6.17s</span><strong>RECAST control event</strong><p>Vehicle 1 applies release crossing speed control.</p></li>
+<li><span class="time">t=6.55s</span><strong>RECAST control event</strong><p>Vehicle 1 applies crossing slow down.</p></li>
+<li><span class="time">t=6.95s</span><strong>RECAST residual violation</strong><p>Responsive run briefly enters the critical conflict region.</p></li>
+<li><span class="time">t=7.40s</span><strong>RECAST closest approach</strong><p>Responsive minimum DCA is 3.20 m.</p></li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Recording Inputs</h2>
+      <p>Unity replay JSONs are in <code>unity-replays/</code>. Matching copies were also written to <code>DT/Assets/Resources/Replays/</code>, so Unity can load them as Resources.</p>
+      <p>Expected recording files: <code>recordings/C8_replay.mp4</code> and <code>recordings/C8_recast.mp4</code>.</p>
+      <p>Critical conflict definition: TCA &le; 4s and DCA &le; 8m. Baseline min DCA: 0.12 m; RECAST min DCA: 3.20 m.</p>
+    </section>
+  </main>
+  <script>
+    for (const video of document.querySelectorAll('video')) {
+      const fallback = video.nextElementSibling;
+      video.addEventListener('loadedmetadata', () => {
+        if (fallback) fallback.style.display = 'none';
+      });
+      video.addEventListener('error', () => {
+        if (fallback) fallback.style.display = 'block';
+      });
+    }
+  </script>
+</body>
+</html>
