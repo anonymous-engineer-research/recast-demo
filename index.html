@@ -34,14 +34,14 @@
 <body>
   <header>
     <h1>RECAST Responsive Unity Demo: C8</h1>
-    <p class="lede">This page is a recording shell for the same mined conflict scenario in two modes: non-responsive replay and RECAST responsive. The Unity videos should be recorded from the same fixed camera so the behavioral contrast is visible without running a live demo.</p>
+    <p class="lede" Video recordings are based on conflict scenario C8 from our city-scale traffic dataset and represent an example of the systems-level execution of the RECAST framework.</p>
   </header>
   <main>
     <section class="grid">
       
       <section class="video-card">
         <h2>Non-responsive replay</h2>
-        <p>Vehicles follow the recorded/SUMO plan; safety signals are observed after the fact.</p>
+        <p>Vehicles follow the recorded/SUMO plan; safety signals are observed after the fact. A crash still occurs because drivers do not react to the V2V warnings.</p>
         <video controls muted preload="metadata" src="recordings/C8_replay.mp4"></video>
         <div class="video-fallback">Place <code>C8_replay.mp4</code> in the <code>recordings/</code> folder.</div>
       </section>
@@ -49,7 +49,7 @@
       
       <section class="video-card">
         <h2>RECAST responsive</h2>
-        <p>V2V reception updates awareness and changes vehicle behavior in the loop (the slowdown response here is deliberately exaggerated for clarity).</p>
+        <p>V2V reception updates awareness and changes vehicle behavior in the loop (note that the slowdown response here is deliberately exaggerated for clear visualization).</p>
         <video controls muted preload="metadata" src="recordings/C8_recast.mp4"></video>
         <div class="video-fallback">Place <code>C8_recast.mp4</code> in the <code>recordings/</code> folder.</div>
       </section>
